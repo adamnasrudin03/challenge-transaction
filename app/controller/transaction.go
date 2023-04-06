@@ -35,13 +35,13 @@ func (c *transactionController) ListTransaction(ctx *gin.Context) {
 
 	paramPage, err := strconv.ParseUint(ctx.Query("page"), 10, 32)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param page not found or invalid", http.StatusBadRequest, true, nil, nil))
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param page not found or invalid", http.StatusBadRequest, true, nil, err.Error()))
 		return
 	}
 
 	paramLimit, err = strconv.ParseUint(ctx.Query("limit"), 10, 32)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param limit not found or invalid", http.StatusBadRequest, true, nil, nil))
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param limit not found or invalid", http.StatusBadRequest, true, nil, err.Error()))
 		return
 	}
 	param := dto.ParamTransactions{
@@ -51,7 +51,7 @@ func (c *transactionController) ListTransaction(ctx *gin.Context) {
 
 	transactions, err := c.Service.Transaction.GetTransactions(ctx, param)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("error to get transaction", http.StatusBadRequest, true, nil, nil))
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("error to get transaction", http.StatusBadRequest, true, nil, err.Error()))
 		return
 	}
 
@@ -72,11 +72,11 @@ func (c *transactionController) Create(ctx *gin.Context) {
 		return
 	}
 
-	transactions, err := c.Service.Transaction.Create(ctx, input)
+	_, err = c.Service.Transaction.Create(ctx, input)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("error to get transaction", http.StatusBadRequest, true, nil, nil))
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("there was an error creating transaction data", http.StatusBadRequest, true, nil, err.Error()))
 		return
 	}
 
-	ctx.JSON(http.StatusOK, helpers.APIResponse("List of transaction", http.StatusOK, false, transactions, nil))
+	ctx.JSON(http.StatusCreated, helpers.APIResponse("data transaction created", http.StatusCreated, false, nil, nil))
 }
