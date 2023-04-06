@@ -1,7 +1,10 @@
 package main
 
 import (
+	"adamnasrudin03/challenge-transaction/app"
 	"adamnasrudin03/challenge-transaction/app/configs"
+	"adamnasrudin03/challenge-transaction/app/controller"
+	routers "adamnasrudin03/challenge-transaction/app/router"
 	"adamnasrudin03/challenge-transaction/pkg/database"
 	"adamnasrudin03/challenge-transaction/pkg/helpers"
 	"fmt"
@@ -14,6 +17,11 @@ import (
 
 var (
 	db *gorm.DB = database.SetupDbConnection()
+
+	repo     = app.WiringRepository(db)
+	services = app.WiringService(repo)
+
+	transactionController controller.TransactionController = controller.NewTransactionController(services)
 )
 
 func main() {
@@ -29,6 +37,7 @@ func main() {
 	})
 
 	// Route here
+	routers.TransactionRouter(router, transactionController)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, helpers.APIResponse("page not found", http.StatusNotFound, true, nil))
