@@ -4,6 +4,7 @@ import (
 	"adamnasrudin03/challenge-transaction/app/dto"
 	"adamnasrudin03/challenge-transaction/app/service"
 	"adamnasrudin03/challenge-transaction/pkg/helpers"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -78,5 +79,6 @@ func (c *transactionController) Create(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, helpers.APIResponse("data transaction created", http.StatusCreated, false, nil, nil))
+	message := fmt.Sprintf("data transaction created with request_id = %v ", input.RequestID)
+	ctx.JSON(http.StatusCreated, helpers.APIResponse(message, http.StatusCreated, false, nil, nil))
 }
