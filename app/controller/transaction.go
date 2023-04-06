@@ -30,21 +30,27 @@ func NewTransactionController(srv *service.Services) TransactionController {
 
 func (c *transactionController) ListTransaction(ctx *gin.Context) {
 	var (
-		paramPage  uint64 = 0
+		paramPage  uint64 = 1
 		paramLimit uint64 = 10
+		err        error
 	)
 
-	paramPage, err := strconv.ParseUint(ctx.Query("page"), 10, 32)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param page not found or invalid", http.StatusBadRequest, true, nil, err.Error()))
-		return
+	if ctx.Query("page") == "" {
+		paramPage, err = strconv.ParseUint(ctx.Query("page"), 10, 32)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param page not found or invalid", http.StatusBadRequest, true, nil, err.Error()))
+			return
+		}
 	}
 
-	paramLimit, err = strconv.ParseUint(ctx.Query("limit"), 10, 32)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param limit not found or invalid", http.StatusBadRequest, true, nil, err.Error()))
-		return
+	if ctx.Query("limit") != "" {
+		paramLimit, err = strconv.ParseUint(ctx.Query("limit"), 10, 32)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param limit not found or invalid", http.StatusBadRequest, true, nil, err.Error()))
+			return
+		}
 	}
+
 	param := dto.ParamTransactions{
 		Page:  paramPage,
 		Limit: paramLimit,
