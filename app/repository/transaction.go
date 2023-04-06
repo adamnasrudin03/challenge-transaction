@@ -12,7 +12,7 @@ import (
 // TransactionRepository is contract what TransactionRepository can do to db
 type TransactionRepository interface {
 	Create(input entity.Transaction) (res entity.Transaction, err error)
-	GetAll(ctx *gin.Context, queryparam dto.ParamTransactions) (result []entity.Transaction, total int64, err error)
+	GetAll(ctx *gin.Context, queryparam dto.ParamTransactions) (result []entity.Transaction, total uint64, err error)
 }
 
 type initTransactionRepo struct {
@@ -35,17 +35,17 @@ func (repo *initTransactionRepo) Create(input entity.Transaction) (res entity.Tr
 	return input, err
 }
 
-func (repo *initTransactionRepo) GetAll(ctx *gin.Context, queryparam dto.ParamTransactions) (result []entity.Transaction, total int64, err error) {
+func (repo *initTransactionRepo) GetAll(ctx *gin.Context, queryparam dto.ParamTransactions) (result []entity.Transaction, total uint64, err error) {
 	offset := queryparam.Limit * (queryparam.Page - 1)
-
+	var totaldata int64 = 0
 	query := repo.DB.WithContext(ctx)
-	err = query.Model(&entity.Transaction{}).Count(&total).Error
+	err = query.Model(&entity.Transaction{}).Count(&totaldata).Error
 	if err != nil {
 		log.Printf("[TransactionRepository-GetAll] error count total data: %+v \n", err)
 		return
 	}
-
-	err = query.Offset(offset).Limit(queryparam.Limit).Find(&result).Error
+	total = uint64(totaldata)
+	err = query.Offset(int(offset)).Limit(int(queryparam.Limit)).Find(&result).Error
 	if err != nil {
 		log.Printf("[TransactionRepository-GetAll] error get data: %+v \n", err)
 		return

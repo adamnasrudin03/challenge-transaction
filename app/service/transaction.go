@@ -24,15 +24,15 @@ func NewTransactionService(transactionRepo repository.TransactionRepository) Tra
 	}
 }
 func (u *initTransactionService) GetTransactions(ctx *gin.Context, queryparam dto.ParamTransactions) (result dto.ResponseList, err error) {
+	result.Limit = queryparam.Limit
+	result.Page = queryparam.Page
 
 	result.Data, result.Total, err = u.transactionRepository.GetAll(ctx, queryparam)
 	if err != nil {
 		return result, err
 	}
-	result.Limit = uint(queryparam.Limit)
-	result.Page = uint(queryparam.Page)
 
-	result.LastPage = uint(math.Ceil(float64(result.Total) / float64(queryparam.Limit)))
+	result.LastPage = uint64(math.Ceil(float64(result.Total) / float64(queryparam.Limit)))
 
 	return result, nil
 }

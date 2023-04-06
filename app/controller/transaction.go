@@ -28,17 +28,17 @@ func NewTransactionController(srv *service.Services) TransactionController {
 
 func (c *transactionController) ListTransaction(ctx *gin.Context) {
 	var (
-		paramPage  int = 0
-		paramLimit int = 10
+		paramPage  uint64 = 0
+		paramLimit uint64 = 10
 	)
 
-	paramPage, err := strconv.Atoi(ctx.Query("page"))
+	paramPage, err := strconv.ParseUint(ctx.Query("page"), 10, 32)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param page not found or invalid", http.StatusBadRequest, true, nil))
 		return
 	}
 
-	paramLimit, err = strconv.Atoi(ctx.Query("limit"))
+	paramLimit, err = strconv.ParseUint(ctx.Query("limit"), 10, 32)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param limit not found or invalid", http.StatusBadRequest, true, nil))
 		return

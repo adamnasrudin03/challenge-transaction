@@ -10,7 +10,7 @@ type TransactionReq struct {
 }
 
 type ParamTransactions struct {
-	Page   int `json:"page" valid:"Required"`
-	Limit  int `json:"limit" valid:"Required"`
-	Offset int `json:"offset"`
+	Page   uint64 `json:"page" valid:"Required"`
+	Limit  uint64 `json:"limit" valid:"Required"`
+	Offset uint64 `json:"offset"`
 }
