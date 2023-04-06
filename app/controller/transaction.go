@@ -34,13 +34,13 @@ func (c *transactionController) ListTransaction(ctx *gin.Context) {
 
 	paramPage, err := strconv.ParseUint(ctx.Query("page"), 10, 32)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param page not found or invalid", http.StatusBadRequest, true, nil))
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param page not found or invalid", http.StatusBadRequest, true, nil, nil))
 		return
 	}
 
 	paramLimit, err = strconv.ParseUint(ctx.Query("limit"), 10, 32)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param limit not found or invalid", http.StatusBadRequest, true, nil))
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("query param limit not found or invalid", http.StatusBadRequest, true, nil, nil))
 		return
 	}
 	param := dto.ParamTransactions{
@@ -50,9 +50,9 @@ func (c *transactionController) ListTransaction(ctx *gin.Context) {
 
 	transactions, err := c.Service.Transaction.GetTransactions(ctx, param)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("error to get transaction", http.StatusBadRequest, true, nil))
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("error to get transaction", http.StatusBadRequest, true, nil, nil))
 		return
 	}
 
-	ctx.JSON(http.StatusOK, helpers.APIResponse("List of transaction", http.StatusOK, false, transactions))
+	ctx.JSON(http.StatusOK, helpers.APIResponse("List of transaction", http.StatusOK, false, transactions, nil))
 }

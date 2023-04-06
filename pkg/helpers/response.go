@@ -9,16 +9,18 @@ type Response struct {
 	Error   bool        `json:"error"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
+	Errors  interface{} `json:"errors,omitempty"`
 }
 
 // APIResponse is for generating template responses
-func APIResponse(message string, code int, err bool, data interface{}) Response {
+func APIResponse(message string, code int, err bool, data interface{}, errors interface{}) Response {
 
 	return Response{
 		Code:    code,
 		Error:   err,
 		Message: message,
 		Data:    data,
+		Errors:  errors,
 	}
 }
 

@@ -33,14 +33,14 @@ func main() {
 	router.Use(cors.Default())
 
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, helpers.APIResponse("welcome its server", http.StatusOK, false, nil))
+		c.JSON(http.StatusOK, helpers.APIResponse("welcome its server", http.StatusOK, false, nil, nil))
 	})
 
 	// Route here
 	routers.TransactionRouter(router, transactionController)
 
 	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, helpers.APIResponse("page not found", http.StatusNotFound, true, nil))
+		c.JSON(http.StatusNotFound, helpers.APIResponse("page not found", http.StatusNotFound, true, nil, nil))
 	})
 
 	config := configs.GetInstance()
