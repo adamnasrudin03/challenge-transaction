@@ -2,6 +2,7 @@ package service
 
 import (
 	"adamnasrudin03/challenge-transaction/app/dto"
+	"adamnasrudin03/challenge-transaction/app/entity"
 	"adamnasrudin03/challenge-transaction/app/repository"
 	"math"
 
@@ -11,6 +12,7 @@ import (
 // TransactionService is a contract about something that this service can do
 type TransactionService interface {
 	GetTransactions(ctx *gin.Context, queryparam dto.ParamTransactions) (result dto.ResponseList, err error)
+	Create(ctx *gin.Context, input dto.TransactionReq) (res entity.Transaction, err error)
 }
 
 type initTransactionService struct {
@@ -35,4 +37,13 @@ func (srv *initTransactionService) GetTransactions(ctx *gin.Context, queryparam 
 	result.LastPage = uint64(math.Ceil(float64(result.Total) / float64(queryparam.Limit)))
 
 	return result, nil
+}
+
+func (srv *initTransactionService) Create(ctx *gin.Context, input dto.TransactionReq) (res entity.Transaction, err error) {
+
+	res, err = srv.transactionRepository.Create(input.Data[0])
+	if err != nil {
+		return
+	}
+	return
 }

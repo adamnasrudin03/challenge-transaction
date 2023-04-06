@@ -13,6 +13,7 @@ import (
 // TransactionController interface is a contract what this controller can do
 type TransactionController interface {
 	ListTransaction(ctx *gin.Context)
+	Create(ctx *gin.Context)
 }
 
 type transactionController struct {
@@ -49,6 +50,29 @@ func (c *transactionController) ListTransaction(ctx *gin.Context) {
 	}
 
 	transactions, err := c.Service.Transaction.GetTransactions(ctx, param)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("error to get transaction", http.StatusBadRequest, true, nil, nil))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, helpers.APIResponse("List of transaction", http.StatusOK, false, transactions, nil))
+}
+
+func (c *transactionController) Create(ctx *gin.Context) {
+	var input dto.TransactionReq
+
+	//Validation input user
+	err := ctx.ShouldBindJSON(&input)
+	if err != nil {
+		errors := helpers.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helpers.APIResponse("failed to process request", http.StatusUnprocessableEntity, true, nil, errorMessage)
+		ctx.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	transactions, err := c.Service.Transaction.Create(ctx, input)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, helpers.APIResponse("error to get transaction", http.StatusBadRequest, true, nil, nil))
 		return

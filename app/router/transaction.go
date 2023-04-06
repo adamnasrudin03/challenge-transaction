@@ -9,6 +9,7 @@ import (
 func TransactionRouter(e *gin.Engine, transactionController controller.TransactionController) {
 	transactionRoutes := e.Group("/api/v1/transaction")
 	{
+		transactionRoutes.POST("/", transactionController.Create)
 		transactionRoutes.GET("/", transactionController.ListTransaction)
 	}
 }
