@@ -1,5 +1,5 @@
 # challenge-transaction
-This is a challenge for goroutines
+This is a challenge for create 1000 record
 
 # How to run this project
 
