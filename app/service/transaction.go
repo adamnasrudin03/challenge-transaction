@@ -23,11 +23,11 @@ func NewTransactionService(transactionRepo repository.TransactionRepository) Tra
 		transactionRepository: transactionRepo,
 	}
 }
-func (u *initTransactionService) GetTransactions(ctx *gin.Context, queryparam dto.ParamTransactions) (result dto.ResponseList, err error) {
+func (srv *initTransactionService) GetTransactions(ctx *gin.Context, queryparam dto.ParamTransactions) (result dto.ResponseList, err error) {
 	result.Limit = queryparam.Limit
 	result.Page = queryparam.Page
 
-	result.Data, result.Total, err = u.transactionRepository.GetAll(ctx, queryparam)
+	result.Data, result.Total, err = srv.transactionRepository.GetAll(ctx, queryparam)
 	if err != nil {
 		return result, err
 	}
