@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "828642d9-9bb5-4e8e-8bce-4b882cb8f51b",
+		"name": "challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10619265"
+	},
+	"item": [
+		{
+			"name": "challenge transaction",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/transaction?page=1&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"transaction"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"request_id\": 123455,\r\n    \"data\": [\r\n        {\r\n            \"id\": 12345,\r\n            \"customer\": \"John Smith\",\r\n            \"quantity\": 1,\r\n            \"price\": 10.00,\r\n            \"timestime\": \"2022-01-01 22:10:44\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/transaction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
