@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log"
 
 	"adamnasrudin03/challenge-transaction/app/configs"
 	"adamnasrudin03/challenge-transaction/app/entity"
@@ -37,7 +38,7 @@ func SetupDbConnection() *gorm.DB {
 		)
 	}
 
-	fmt.Println("Connection Database Success!")
+	log.Println("Connection Database Success!")
 	return db
 }
 
