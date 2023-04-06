@@ -4,6 +4,7 @@ import (
 	"adamnasrudin03/challenge-transaction/app/dto"
 	"adamnasrudin03/challenge-transaction/app/entity"
 	"adamnasrudin03/challenge-transaction/app/repository"
+	"log"
 	"math"
 
 	"github.com/gin-gonic/gin"
@@ -41,9 +42,13 @@ func (srv *initTransactionService) GetTransactions(ctx *gin.Context, queryparam 
 
 func (srv *initTransactionService) Create(ctx *gin.Context, input dto.TransactionReq) (res entity.Transaction, err error) {
 
-	res, err = srv.transactionRepository.Create(input.Data[0])
-	if err != nil {
-		return
+	for _, v := range input.Data {
+		go func(transaktion entity.Transaction) {
+			log.Println("Running process request_id: ", input.RequestID)
+			// transaktion.ID = 0
+			_, _ = srv.transactionRepository.Create(transaktion)
+		}(v)
 	}
-	return
+
+	return entity.Transaction{}, nil
 }
